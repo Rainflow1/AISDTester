@@ -1,0 +1,32 @@
+using UnityEngine;
+using System;
+
+public class OutputArrayController : GenericArrayController<TileDispenserController>
+{
+    static System.Random random = new System.Random(1);
+
+    static int lastId = 1;
+
+    protected override void tileInit(TileDispenserController tile){
+        tile.Id = lastId++;
+    }
+
+    public void initValues(){
+        unEmptyTiles();
+        randomizeValues();
+    }
+
+    public void unEmptyTiles(){
+
+        foreach(TileDispenserController dispenser in getTiles()){
+            dispenser.Tile.Empty = false;
+        }
+    }
+
+    public void randomizeValues(){
+
+        foreach(TileDispenserController dispenser in getTiles()){
+            dispenser.Tile.Value = random.Next()%100;
+        }
+    }
+}

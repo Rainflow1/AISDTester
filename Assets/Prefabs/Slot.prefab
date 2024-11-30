@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 8555409436417368395}
   - component: {fileID: 3177789004927881011}
   - component: {fileID: -3895895661751679134}
-  - component: {fileID: 592157214201027514}
+  - component: {fileID: 3878553312528042447}
   m_Layer: 0
   m_Name: Slot
   m_TagString: Untagged
@@ -116,7 +116,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tileValue: 0
   isEmpty: 1
---- !u!114 &592157214201027514
+--- !u!114 &3878553312528042447
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -125,7 +125,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 2870086463667144774}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 146df3c417b7f914e8f5b7741e7f5c05, type: 3}
+  m_Script: {fileID: 11500000, guid: a608bb6d812cc8543aebabde325e389d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   tileToSpawn: {fileID: 1042479655713152025, guid: 1b0c7652b7e53084d87dac4573a9a828, type: 3}
+  reactionType: 1

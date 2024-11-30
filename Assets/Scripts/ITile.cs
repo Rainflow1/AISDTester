@@ -99,4 +99,13 @@ public class ITile : MonoBehaviour
             isEmpty = value;
         }
     }
+
+    public int Id{
+        get{
+            return id;
+        }
+        set{
+            id = value;
+        }
+    }
 }

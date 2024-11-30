@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TileController : MonoBehaviour
 {
-    GameManager gm;
+    LevelManager lm;
     SpriteRenderer sprite;
     ITile tile;
 
@@ -10,7 +10,7 @@ public class TileController : MonoBehaviour
 
     void Start()
     {
-        gm = GameManager.Instance;
+        lm = LevelManager.Instance;
         sprite = GetComponent<SpriteRenderer>();
         tile = GetComponent<ITile>();
     }
@@ -26,17 +26,27 @@ public class TileController : MonoBehaviour
 
             if(!Input.GetMouseButton(0)){
                 isDragged = false;
-                if(gm.HoveredTile == this.tile){
-                    gm.HoveredTile = null;
+                if(lm.HoveredTile == tile){
+                    lm.HoveredTile = null;
                 }
 
-                foreach(SlotController slot in gm.InputArray.getSlots()){
+                bool inputed = false;
+
+                foreach(SlotController slot in lm.InputArray.getTiles()){
                     if(slot.Tile.isInsideRect(tile)){
                         slot.inputTile(tile);
+                        inputed = true;
+                        break;
                     }
                 }
 
-                Destroy(this.gameObject);
+                TileDispenserController dispenser = lm.GetTileDispenser(tile.Id);
+
+                if(!inputed && dispenser){
+                    dispenser.Block = false;
+                }
+
+                del();
             }
 
         }else{
@@ -57,5 +67,7 @@ public class TileController : MonoBehaviour
 
     }
 
-    
+    public void del(){
+        Destroy(this.gameObject);
+    }
 }

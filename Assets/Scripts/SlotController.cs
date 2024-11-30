@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SlotController : MonoBehaviour
 {
-    GameManager gm;
+    LevelManager lm;
     SpriteRenderer sprite;
     ITile tile;
 
     void Start(){
-        gm = GameManager.Instance;
+        lm = LevelManager.Instance;
         sprite = GetComponent<SpriteRenderer>();
         tile = GetComponent<ITile>();
     }
@@ -17,7 +17,7 @@ public class SlotController : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0f;
 
-        if(gm.HoveredTile != null && tile.isInsideRect(gm.HoveredTile)){
+        if(lm.HoveredTile != null && tile.isInsideRect(lm.HoveredTile)){
             sprite.color = Color.yellow;
         }else{
             sprite.color = Color.white;
@@ -26,8 +26,14 @@ public class SlotController : MonoBehaviour
     }
 
     public void inputTile(ITile inputTile){
+
+        if(tile.Id != 0){
+            lm.GetTileDispenser(tile.Id).Block = false;
+        }
+
         tile.Value = inputTile.Value;
         tile.Empty = false;
+        tile.Id = inputTile.Id;
     }
 
     public ITile Tile{

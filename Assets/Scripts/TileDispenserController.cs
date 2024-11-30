@@ -2,29 +2,55 @@ using UnityEngine;
 
 public class TileDispenserController : MonoBehaviour
 {
-    GameManager gm;
+    SpriteRenderer sprite;
+    IDispenser dispenser;
     ITile tile;
 
-    [SerializeField] ITile tileToSpawn;
-
+    [SerializeField] int id;
+    bool block = false;
+    
     void Start(){
-        gm = GameManager.Instance;
-        tile = GetComponent<ITile>();
+        dispenser = GetComponent<IDispenser>();
+        sprite = GetComponent<SpriteRenderer>();
     }
 
     void Update(){
 
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
-
-        if(tile.isMouseHover() && Input.GetMouseButtonDown(0)){
-            ITile childTile = Instantiate(tileToSpawn);
-            childTile.transform.position = mouseWorldPos;
-            childTile.Value = tile.Value;
-            childTile.Empty = false;
-
-            gm.HoveredTile = childTile;
+        if(block){
+            sprite.color = Color.gray;
+        }else{
+            sprite.color = Color.white;
         }
 
+    }
+
+    public int Id{
+        get{
+            return id;
+        }
+        set{
+            id = value;
+        }
+    }
+
+    public IDispenser Dispenser{
+        get{
+            return dispenser;
+        }
+    }
+
+    public ITile Tile{
+        get{
+            return GetComponent<ITile>();
+        }
+    }
+
+    public bool Block{
+        get{
+            return block;
+        }
+        set{
+            block = value;
+        }
     }
 }
