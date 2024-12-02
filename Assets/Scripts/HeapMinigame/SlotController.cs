@@ -2,12 +2,12 @@ using UnityEngine;
 
 public class SlotController : MonoBehaviour
 {
-    LevelManager lm;
+    HeapMinigameLevelManager lm;
     SpriteRenderer sprite;
     ITile tile;
 
     void Start(){
-        lm = LevelManager.Instance;
+        lm = HeapMinigameLevelManager.Instance;
         sprite = GetComponent<SpriteRenderer>();
         tile = GetComponent<ITile>();
     }
@@ -17,7 +17,7 @@ public class SlotController : MonoBehaviour
         Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         mouseWorldPos.z = 0f;
 
-        if(lm.HoveredTile != null && tile.isInsideRect(lm.HoveredTile)){
+        if(lm.HoveredTile != null && tile.isInside(lm.HoveredTile)){
             sprite.color = Color.yellow;
         }else{
             sprite.color = Color.white;
@@ -28,7 +28,13 @@ public class SlotController : MonoBehaviour
     public void inputTile(ITile inputTile){
 
         if(tile.Id != 0){
-            lm.GetTileDispenser(tile.Id).Block = false;
+            if(inputTile.PrevSlot){
+                inputTile.PrevSlot.tile.Value = tile.Value;
+                inputTile.PrevSlot.tile.Id = tile.Id;
+                inputTile.PrevSlot.tile.Empty = false;
+            }else{
+                lm.GetTileDispenser(tile.Id).Block = false;
+            }
         }
 
         tile.Value = inputTile.Value;

@@ -9,14 +9,14 @@ public class IDispenser : MonoBehaviour
         Block
     }
 
-    LevelManager lm;
+    HeapMinigameLevelManager lm;
     ITile tile;
 
     [SerializeField] ITile tileToSpawn;
     [SerializeField] ReactionType reactionType;
 
     void Start(){
-        lm = LevelManager.Instance;
+        lm = HeapMinigameLevelManager.Instance;
         tile = GetComponent<ITile>();
     }
 
@@ -26,6 +26,7 @@ public class IDispenser : MonoBehaviour
         mouseWorldPos.z = 0f;
 
         TileDispenserController dispenserController = GetComponent<TileDispenserController>();
+        SlotController slotController = GetComponent<SlotController>();
 
         bool blocked = false;
         if(dispenserController){
@@ -37,6 +38,7 @@ public class IDispenser : MonoBehaviour
             childTile.transform.position = mouseWorldPos;
             childTile.Value = tile.Value;
             childTile.Empty = false;
+            childTile.PrevSlot = slotController;
 
             if(dispenserController){
                 childTile.Id = dispenserController.Id;

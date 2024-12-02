@@ -3,7 +3,7 @@ using System;
 
 public class OutputArrayController : GenericArrayController<TileDispenserController>
 {
-    static System.Random random = new System.Random(1);
+    static System.Random random = new System.Random();
 
     static int lastId = 1;
 
@@ -11,7 +11,11 @@ public class OutputArrayController : GenericArrayController<TileDispenserControl
         tile.Id = lastId++;
     }
 
-    public void initValues(){
+    public void initValues(int n = 0){
+        if(n > 0){
+            changeTilesNumber(n);
+        }
+
         unEmptyTiles();
         randomizeValues();
     }

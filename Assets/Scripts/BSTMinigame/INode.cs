@@ -1,16 +1,15 @@
 using UnityEngine;
 
-public class INode : MonoBehaviour
+public class INode : IElem
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
+
+
+
+    public override bool isInside(Vector2 p){
+        return Vector2.Distance(transform.position, p) <= sprite.bounds.extents.x;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public override bool isInside(ITile t){
+        return Vector2.Distance(transform.position, t.transform.position) <= sprite.bounds.extents.x;
     }
 }

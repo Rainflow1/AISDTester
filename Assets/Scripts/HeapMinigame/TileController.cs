@@ -1,73 +1,32 @@
 using UnityEngine;
 
-public class TileController : MonoBehaviour
+public class TileController : GenericElemController<ITile>
 {
-    LevelManager lm;
-    SpriteRenderer sprite;
-    ITile tile;
-
-    bool isDragged = false;
-
-    void Start()
-    {
-        lm = LevelManager.Instance;
-        sprite = GetComponent<SpriteRenderer>();
-        tile = GetComponent<ITile>();
-    }
-
     
-    void Update(){
+
+    protected override void onDrop(Vector2 mousePos){
         
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
-
-        if(isDragged){
-            transform.position = mouseWorldPos;
-
-            if(!Input.GetMouseButton(0)){
-                isDragged = false;
-                if(lm.HoveredTile == tile){
-                    lm.HoveredTile = null;
-                }
-
-                bool inputed = false;
-
-                foreach(SlotController slot in lm.InputArray.getTiles()){
-                    if(slot.Tile.isInsideRect(tile)){
-                        slot.inputTile(tile);
-                        inputed = true;
-                        break;
-                    }
-                }
-
-                TileDispenserController dispenser = lm.GetTileDispenser(tile.Id);
-
-                if(!inputed && dispenser){
-                    dispenser.Block = false;
-                }
-
-                del();
-            }
-
-        }else{
-
-            if(tile.isMouseHover() && Input.GetMouseButton(0)){
-                isDragged = true;
-            }
-
+        if(lm.HoveredTile == elem){
+            lm.HoveredTile = null;
         }
 
-#if DEBUG
-        if(isDragged){
-            sprite.color = Color.green;
-        }else{
-            sprite.color = Color.red;
+        bool inputed = false;
+
+        foreach(SlotController slot in lm.InputArray.getTiles()){
+            if(slot.Tile.isInside(elem)){
+                slot.inputTile(elem);
+                inputed = true;
+                break;
+            }
         }
-#endif
 
-    }
+        TileDispenserController dispenser = lm.GetTileDispenser(elem.Id);
 
-    public void del(){
-        Destroy(this.gameObject);
+        if(!inputed && dispenser){
+            dispenser.Block = false;
+        }
+
+        del();
     }
+    
 }
