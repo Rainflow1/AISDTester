@@ -23,25 +23,48 @@ public class HeapMinigameLevelManager : LevelManager<HeapMinigameLevelManager>
     [SerializeField] Button checkButton;
     [SerializeField] TextMeshPro descObject;
     [SerializeField] Animator background;
+    [SerializeField] GameObject loadingScreen;
 
 
-    [SerializeField] private int num = 3;
+    [SerializeField] private int num = 1;
     [SerializeField] private int maxNum = 15; 
 
     private HeapType heapType;
+    private bool started = false;
+    private float timeElapsed = 0.0f;
+    private float scoreTimer = 0.0f;
 
     void Start(){
         hoveredTile = null;
+        initHeapType();
         outputArrayController.initValues(num);
         inputArrayController.reinit(num);
-        initHeapType();
+        loadingScreen.SetActive(true);
     }
 
 
     void Update(){
         
-        ChangeButtonState();
+        timeElapsed += Time.deltaTime;
 
+        if(!started && timeElapsed >= 0.1f){
+
+            nextRound();
+
+            started = true;
+        }
+
+        if(started){
+            ChangeButtonState();
+            loadingScreen.SetActive(false);
+
+            scoreTimer += Time.deltaTime;
+
+            if(scoreTimer >= 1.0f){
+                scoreTimer = 0f;
+                scoreManager.addScore(-5);
+            }
+        }
     }
 
     void ChangeButtonState(){
@@ -64,6 +87,7 @@ public class HeapMinigameLevelManager : LevelManager<HeapMinigameLevelManager>
         num = math.min(num+2, maxNum);
         outputArrayController.initValues(num);
         inputArrayController.reinit(num);
+        scoreManager.addScore(100 + num * 30);
     }
 
     public void CheckButtonOnClick(){
@@ -85,7 +109,8 @@ public class HeapMinigameLevelManager : LevelManager<HeapMinigameLevelManager>
         for(int i = 0; i < array.Length; i++){
             if(array[i] != binaryHeap.get(i)){
                 heapProperty = false;
-                break;
+                inputArrayController.getTile(i).markWrong();
+                scoreManager.addScore(-10);
             }
         }
 

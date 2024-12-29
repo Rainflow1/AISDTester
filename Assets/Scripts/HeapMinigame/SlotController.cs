@@ -19,7 +19,7 @@ public class SlotController : MonoBehaviour
 
         if(lm.HoveredTile != null && tile.isInside(lm.HoveredTile)){
             sprite.color = Color.yellow;
-        }else{
+        }else if(sprite.color == Color.yellow){
             sprite.color = Color.white;
         }
 
@@ -40,6 +40,10 @@ public class SlotController : MonoBehaviour
         tile.Value = inputTile.Value;
         tile.Empty = false;
         tile.Id = inputTile.Id;
+    }
+
+    public void markWrong(){
+        sprite.color = Color.red;
     }
 
     public ITile Tile{

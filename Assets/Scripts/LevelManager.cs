@@ -17,4 +17,6 @@ public class LevelManager<T> : MonoBehaviour where T : LevelManager<T>
         }
     }
 
+    [SerializeField] protected ScoreManager scoreManager;
+
 }
