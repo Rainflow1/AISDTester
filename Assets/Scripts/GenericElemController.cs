@@ -1,6 +1,5 @@
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public abstract class GenericElemController<T, L> : MonoBehaviour where T : IElem where L : LevelManager<L>
 {
