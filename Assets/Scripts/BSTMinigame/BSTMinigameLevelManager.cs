@@ -28,16 +28,6 @@ public class BSTMinigameLevelManager : LevelManager<BSTMinigameLevelManager>
 
     void Start(){
 
-        //TODO testuj sprawdzanie drzewa -
-        //Dodaj tresc zadania -
-        //Dodaj background i uporządkuj -
-        //Dodaj score z poprzedniego  -
-        //Dodaj logikę następnej rundy -
-        //Dodaj menu główne i przechodzenie między scenami -
-        //Reszta
-        //Dodaj odejmowanie nodów
-        //Ograniczenie nodów do granicy -
-
         NextRound();
         
     }
