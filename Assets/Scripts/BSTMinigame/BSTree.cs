@@ -146,9 +146,46 @@ public class BSTree{
         IBSTreeNode node = GetNode(value);
 
         if(node.leftChild == null && node.rightChild == null){
-            node.parent = null;
-            nodes.Remove(node);
+            
+        }else if(node.leftChild == null){
+            ShiftNode(node, node.rightChild);
+        }else if(node.rightChild == null){
+            ShiftNode(node, node.leftChild);
+        }else{
+            IBSTreeNode successor = GetSuccessorNode(node);
+            if(successor.parent != node){
+                ShiftNode(successor, successor.rightChild);
+                successor.rightChild = node.rightChild;
+                successor.rightChild.parent = successor;
+            }
+            ShiftNode(node, successor);
+            successor.leftChild = node.leftChild;
+            successor.leftChild.parent = successor;
         }
+        node.parent = null;
+    }
+
+    public void ShiftNode(IBSTreeNode node1, IBSTreeNode node2){
+        if(node1.parent == null){
+            root = node2;
+        }else if(node1 == node1.parent.leftChild){
+            node1.parent.leftChild = node2;
+        }else{
+            node1.parent.rightChild = node2;
+        }
+        if(node2 != null){
+            node2.parent = node1.parent;
+        }
+    }
+
+    public IBSTreeNode GetSuccessorNode(IBSTreeNode node){
+        IBSTreeNode successor = node.rightChild;
+
+        while(successor.leftChild != null){
+            successor = successor.leftChild;
+        }
+
+        return successor;
     }
 
     public void PrintTree(List<IBSTreeNode> list = null){

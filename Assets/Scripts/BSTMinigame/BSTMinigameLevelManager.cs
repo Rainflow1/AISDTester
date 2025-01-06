@@ -26,6 +26,7 @@ public class BSTMinigameLevelManager : LevelManager<BSTMinigameLevelManager>
     private NodeControler mainRoot = null;
     private BSTree nodesTree;
     private List<int> roundNumbers;
+    private List<int> numbersToRemove;
     private int maxRound = 20;
     private int round = 5;
 
@@ -34,9 +35,9 @@ public class BSTMinigameLevelManager : LevelManager<BSTMinigameLevelManager>
         //TODO testuj sprawdzanie drzewa -
         //Dodaj tresc zadania -
         //Dodaj background i uporządkuj -
-        //Dodaj score z poprzedniego 
+        //Dodaj score z poprzedniego  -
         //Dodaj logikę następnej rundy -
-        //Dodaj menu główne i przechodzenie między scenami
+        //Dodaj menu główne i przechodzenie między scenami -
         //Reszta
         //Dodaj odejmowanie nodów
         //Ograniczenie nodów do granicy -
@@ -64,11 +65,20 @@ public class BSTMinigameLevelManager : LevelManager<BSTMinigameLevelManager>
 
         initNodes();
 
-        taskDescription.text = $"Zbuduj drzewo BST po dodaniu w kolejności: {string.Join(", ", roundNumbers)} i następnie usunięciu: -";
+        taskDescription.text = $"Zbuduj drzewo BST po dodaniu w kolejności: {string.Join(", ", roundNumbers)}" + (numbersToRemove.Count>0?$" i następnie usunięciu: {string.Join(", ", numbersToRemove)}":"");
+
+        scoreManager.addScore(50 + round * 30);
 
         round = math.min(round + 3, maxRound);
 
-        scoreManager.addScore(100 + round * 30);
+        if(PlayerPrefs.HasKey("BSTScore")){
+            if(scoreManager.getScore() > PlayerPrefs.GetInt("BSTScore")){
+                PlayerPrefs.SetInt("BSTScore", scoreManager.getScore());
+            }
+        }else{
+            PlayerPrefs.SetInt("BSTScore", scoreManager.getScore());
+        }
+
     }
 
     private void initNodes(){
@@ -100,6 +110,14 @@ public class BSTMinigameLevelManager : LevelManager<BSTMinigameLevelManager>
         foreach(int i in roundNumbers){
             nodesTree.Insert(i);
         }
+
+        numbersToRemove = roundNumbers.OrderBy(x => random.Next()).Take((int)(random.Next()%math.ceil(round*0.4))).ToList();
+        Debug.Log(string.Join(", ", numbersToRemove));
+
+        foreach(int i in numbersToRemove){
+            nodesTree.Remove(i);
+        }
+
         nodesTree.PrintTree();
     }
 

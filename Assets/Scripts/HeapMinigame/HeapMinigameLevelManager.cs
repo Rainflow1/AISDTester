@@ -88,6 +88,14 @@ public class HeapMinigameLevelManager : LevelManager<HeapMinigameLevelManager>
         outputArrayController.initValues(num);
         inputArrayController.reinit(num);
         scoreManager.addScore(100 + num * 30);
+
+        if(PlayerPrefs.HasKey("HeapScore")){
+            if(scoreManager.getScore() > PlayerPrefs.GetInt("HeapScore")){
+                PlayerPrefs.SetInt("HeapScore", scoreManager.getScore());
+            }
+        }else{
+            PlayerPrefs.SetInt("HeapScore", scoreManager.getScore());
+        }
     }
 
     public override void CheckButtonOnClick(){
