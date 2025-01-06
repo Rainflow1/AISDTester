@@ -20,7 +20,7 @@ public class HeapMinigameLevelManager : LevelManager<HeapMinigameLevelManager>
     ITile hoveredTile;
     [SerializeField] InputArrayController inputArrayController;
     [SerializeField] OutputArrayController outputArrayController;
-    [SerializeField] Button checkButton;
+    
     [SerializeField] TextMeshPro descObject;
     [SerializeField] Animator background;
     [SerializeField] GameObject loadingScreen;
@@ -90,7 +90,7 @@ public class HeapMinigameLevelManager : LevelManager<HeapMinigameLevelManager>
         scoreManager.addScore(100 + num * 30);
     }
 
-    public void CheckButtonOnClick(){
+    public override void CheckButtonOnClick(){
 
         int[] array = new int[inputArrayController.TileNumber];
 

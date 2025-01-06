@@ -1,27 +1,31 @@
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.Rendering;
 
-public abstract class GenericElemController<T> : MonoBehaviour where T : IElem
+public abstract class GenericElemController<T, L> : MonoBehaviour where T : IElem where L : LevelManager<L>
 {
-    protected HeapMinigameLevelManager lm;
+    protected L lm;
     protected SpriteRenderer sprite;
     protected T elem;
 
+    protected Vector3 mouseWorldPos;
     protected bool isDragged = false;
 
     protected virtual void Start()
     {
-        lm = HeapMinigameLevelManager.Instance;
+        lm = LevelManager<L>.Instance;
         sprite = GetComponent<SpriteRenderer>();
         elem = GetComponent<T>();
     }
 
     protected virtual void Update(){
         
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        mouseWorldPos.z = 0f;
+        mouseWorldPos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mouseWorldPos.z = -3f;
 
         if(isDragged){
             transform.position = mouseWorldPos;
+            transform.position = new Vector3(math.max(-9 + transform.lossyScale.x, math.min(transform.position.x, 9 - transform.lossyScale.x)), math.max(-5 + transform.lossyScale.y, math.min(transform.position.y, 5 - transform.lossyScale.y)), transform.position.z);
 
             onDrag(mouseWorldPos);
 
@@ -33,18 +37,17 @@ public abstract class GenericElemController<T> : MonoBehaviour where T : IElem
         }else{
 
             if(elem.isMouseHover() && Input.GetMouseButton(0)){
-                isDragged = true;
+                if(canBeDragged()){
+                    isDragged = true;
+                    initDrag();
+                }else{
+                    onDragFail();
+                }
             }
 
         }
 
-#if DEBUG
-        if(isDragged){
-            sprite.color = Color.green;
-        }else{
-            sprite.color = Color.red;
-        }
-#endif
+
 
     }
 
@@ -57,5 +60,17 @@ public abstract class GenericElemController<T> : MonoBehaviour where T : IElem
     }
     protected virtual void onDrag(Vector2 mousePos){
 
+    }
+
+    protected virtual void initDrag(){
+
+    }
+
+    protected virtual void onDragFail(){
+
+    }
+
+    protected virtual bool canBeDragged(){
+        return true;
     }
 }

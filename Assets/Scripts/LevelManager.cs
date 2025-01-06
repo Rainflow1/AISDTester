@@ -18,5 +18,9 @@ public class LevelManager<T> : MonoBehaviour where T : LevelManager<T>
     }
 
     [SerializeField] protected ScoreManager scoreManager;
+    [SerializeField] protected Button checkButton;
 
+    public virtual void CheckButtonOnClick(){
+
+    }
 }

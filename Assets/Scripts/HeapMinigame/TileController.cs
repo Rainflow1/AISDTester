@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class TileController : GenericElemController<ITile>
+public class TileController : GenericElemController<ITile, HeapMinigameLevelManager>
 {
     
 

@@ -1,4 +1,5 @@
 using System;
+using Unity.Mathematics;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -33,8 +34,8 @@ public abstract class IElem : MonoBehaviour
         TextMesh textMesh = Text.AddComponent<TextMesh>();
 
         textMesh.text = "";
-        textMesh.characterSize = 0.04f;
-        textMesh.fontSize = 200;
+        textMesh.characterSize = 0.04f ;
+        textMesh.fontSize = (int)math.round(200 * transform.lossyScale.x);
         textMesh.color = Color.black;
 
         Text.transform.SetParent(transform);
